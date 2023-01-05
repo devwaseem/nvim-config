@@ -1,4 +1,6 @@
 local is_available = astronvim.is_available
+local whichkey = require("which-key")
+local whichkey_opts = { mode = "n", prefix = "<leader>", silent = true }
 
 local maps = { i = {}, n = {}, v = {}, t = {}, [""] = {} }
 
@@ -14,6 +16,8 @@ maps.n["gx"] = { function() astronvim.system_open() end, desc = "Open the file u
 maps.n["<C-s>"] = { "<cmd>w!<cr>", desc = "Force write" }
 maps.n["<C-q>"] = { "<cmd>q!<cr>", desc = "Force quit" }
 maps.n["Q"] = "<Nop>"
+
+
 
 -- Packer
 maps.n["<leader>pc"] = { "<cmd>PackerCompile<cr>", desc = "Packer Compile" }
@@ -33,6 +37,92 @@ if is_available "alpha-nvim" then
   maps.n["<leader>d"] = { function() require("alpha").start() end, desc = "Alpha Dashboard" }
 end
 
+-- ZenMode & Twilight
+--
+if is_available "zen-mode.nvim" and is_available "twilight.nvim" then
+  whichkey.register({
+    z = {
+      name = "ZenMode",
+      z = { "<cmd>ZenMode<CR>", "Toggle Zen Mode" },
+      t = { "<cmd>Twilight<CR>", "Toggle Twilight Only" },
+    }
+  }, whichkey_opts)
+end
+
+-- Hop
+if is_available "hop.nvim" then
+  local hop_mappings = {}
+
+  hop_mappings["s"] = { "<cmd>HopChar1<cr>", desc = "Hop using 1 char" }
+  hop_mappings["S"] = { "<cmd>HopChar2<cr>", desc = "Hop using 2 char" }
+  hop_mappings["sl"] = { "<cmd>HopLineStart<cr>", desc = "Hop to the line start" }
+  hop_mappings["sw"] = { "<cmd>HopWord<cr>", desc = "Hop to a word" }
+  hop_mappings["sa"] = { "<cmd>HopAnywhere<cr>", desc = "Hop Anywhere" }
+
+  maps.n = hop_mappings
+  maps.v = hop_mappings
+
+  maps.n["f"] = {
+    function()
+      require('hop').hint_char1({
+        direction = require('hop.hint').HintDirection.AFTER_CURSOR,
+        current_line_only = true
+      })
+    end,
+    desc = "Find a character in current line after the cursor"
+  }
+  maps.n["F"] = {
+    function()
+      require('hop').hint_char1({
+        direction = require('hop.hint').HintDirection.BEFORE_CURSOR,
+        current_line_only = true
+      })
+    end,
+    desc = "Find a character in current line before the cursor"
+  }
+  maps.v["f"] = {
+    function()
+      require('hop').hint_char1({
+        direction = require('hop.hint').HintDirection.AFTER_CURSOR,
+        current_line_only = true,
+        inclusive_jump = true,
+      })
+    end,
+    desc = "Jump to a character in current line after the cursor"
+  }
+  maps.v["F"] = {
+    function()
+      require('hop').hint_char1({
+        direction = require('hop.hint').HintDirection.BEFORE_CURSOR,
+        current_line_only = true,
+        inclusive_jump = true,
+      })
+    end,
+    desc = "Jump to a character in current line before the cursor"
+  }
+  maps[""]["t"] = {
+    function()
+      require('hop').hint_char1({
+        direction = require('hop.hint').HintDirection.AFTER_CURSOR,
+        current_line_only = true,
+        hint_offset = -1,
+      })
+    end,
+    desc = "Jump a character in current line after the cursor"
+  }
+  maps[""]["T"] = {
+    function()
+      require('hop').hint_char1({
+        direction = require('hop.hint').HintDirection.BEFORE_CURSOR,
+        current_line_only = true,
+        hint_offset = -1,
+      })
+    end,
+    desc = "Jump a character in current line before the cursor"
+  }
+
+end
+
 -- Bufdelete
 if is_available "bufdelete.nvim" then
   maps.n["<leader>c"] = { function() require("bufdelete").bufdelete(0, false) end, desc = "Close buffer" }
@@ -48,10 +138,16 @@ if is_available "bufferline.nvim" then
   maps.n["<S-h>"] = { "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer tab" }
   maps.n[">b"] = { "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer tab right" }
   maps.n["<b"] = { "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer tab left" }
-else
+
+  -- else
   maps.n["<S-l>"] = { "<cmd>bnext<cr>", desc = "Next buffer" }
   maps.n["<S-h>"] = { "<cmd>bprevious<cr>", desc = "Previous buffer" }
 end
+
+-- -- buffers
+--
+-- maps.n["]b"] = { "<Cmd>BufferLineMoveNext<CR>", desc = "Move tab to right" }
+-- maps.n["[b"] = { "<Cmd>BufferLineMovePrev<CR>", desc = "Move tab to left" }
 
 -- Comment
 if is_available "Comment.nvim" then
@@ -88,7 +184,7 @@ if is_available "neovim-session-manager" then
   maps.n["<leader>Sd"] = { "<cmd>SessionManager! delete_session<cr>", desc = "Delete session" }
   maps.n["<leader>Sf"] = { "<cmd>SessionManager! load_session<cr>", desc = "Search sessions" }
   maps.n["<leader>S."] =
-    { "<cmd>SessionManager! load_current_dir_session<cr>", desc = "Load current directory session" }
+  { "<cmd>SessionManager! load_current_dir_session<cr>", desc = "Load current directory session" }
 end
 
 -- Package Manager
@@ -131,6 +227,7 @@ end
 
 -- Telescope
 if is_available "telescope.nvim" then
+  maps.n["<leader>ff"] = { function() require("telescope.builtin").git_files() end, desc = "Search Git Files" }
   maps.n["<leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Search words" }
   maps.n["<leader>fW"] = {
     function()
@@ -143,8 +240,8 @@ if is_available "telescope.nvim" then
   maps.n["<leader>gt"] = { function() require("telescope.builtin").git_status() end, desc = "Git status" }
   maps.n["<leader>gb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
   maps.n["<leader>gc"] = { function() require("telescope.builtin").git_commits() end, desc = "Git commits" }
-  maps.n["<leader>ff"] = { function() require("telescope.builtin").find_files() end, desc = "Search files" }
-  maps.n["<leader>fF"] = {
+  maps.n["<leader>fa"] = { function() require("telescope.builtin").find_files() end, desc = "Search files" }
+  maps.n["<leader>fA"] = {
     function() require("telescope.builtin").find_files { hidden = true, no_ignore = true } end,
     desc = "Search all files",
   }
@@ -153,16 +250,23 @@ if is_available "telescope.nvim" then
   maps.n["<leader>fm"] = { function() require("telescope.builtin").marks() end, desc = "Search marks" }
   maps.n["<leader>fo"] = { function() require("telescope.builtin").oldfiles() end, desc = "Search history" }
   maps.n["<leader>fc"] =
-    { function() require("telescope.builtin").grep_string() end, desc = "Search for word under cursor" }
+  { function() require("telescope.builtin").grep_string() end, desc = "Search for word under cursor" }
   maps.n["<leader>sb"] = { function() require("telescope.builtin").git_branches() end, desc = "Git branches" }
   maps.n["<leader>sh"] = { function() require("telescope.builtin").help_tags() end, desc = "Search help" }
   maps.n["<leader>sm"] = { function() require("telescope.builtin").man_pages() end, desc = "Search man" }
   maps.n["<leader>sr"] = { function() require("telescope.builtin").registers() end, desc = "Search registers" }
   maps.n["<leader>sk"] = { function() require("telescope.builtin").keymaps() end, desc = "Search keymaps" }
   maps.n["<leader>sc"] = { function() require("telescope.builtin").commands() end, desc = "Search commands" }
+  maps.n["<leader>f/"] = { function() require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes')
+      .get_dropdown {
+        winblend = 10,
+        previewer = false,
+      })
+  end, desc = "[/] Fuzzily search in current buffer]" }
+
   if astronvim.is_available "nvim-notify" then
     maps.n["<leader>sn"] =
-      { function() require("telescope").extensions.notify.notify() end, desc = "Search notifications" }
+    { function() require("telescope").extensions.notify.notify() end, desc = "Search notifications" }
   end
   maps.n["<leader>ls"] = {
     function()
@@ -202,8 +306,8 @@ if is_available "toggleterm.nvim" then
   maps.n["<leader>tv"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
   maps.n["<F7>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" }
   maps.t["<F7>"] = maps.n["<F7>"]
-  maps.n["<C-'>"] = maps.n["<F7>"]
-  maps.t["<C-'>"] = maps.n["<F7>"]
+  maps.n["<C-\\>"] = maps.n["<F7>"]
+  maps.t["<C-\\>"] = maps.n["<F7>"]
 end
 
 if is_available "nvim-dap" then
@@ -234,9 +338,31 @@ if is_available "nvim-dap" then
   end
 end
 
+-- Cheat.sh
+if is_available "nvim-cheat" then
+  maps.n["<leader>?"] = { "<cmd>Cheat<CR>", desc = "Use Cheat.sh" }
+  whichkey.register({
+    ["?"] = { "<cmd>Cheat<CR>", "Cheat.sh" }
+  }, whichkey_opts)
+end
+
+
 -- Stay in indent mode
 maps.v["<"] = { "<gv", desc = "unindent line" }
 maps.v[">"] = { ">gv", desc = "indent line" }
+maps.v["J"] = { ":m '>+1<CR>gv=gv", desc = "Move selected visual down" }
+maps.v["K"] = { ":m '<-2<CR>gv=gv", desc = "Move selected visual down" }
+
+-- Improved navigation
+maps.n["<C-d>"] = { "<C-d>zz", desc = "Scroll down" }
+maps.n["<C-u>"] = { "<C-u>zz", desc = "Scroll up" }
+
+-- Improved Paste
+maps[""]["<leader>p"] = { "\"_dP", desc = "Paste without overriding the buffer" }
+
+
+-- Others
+-- maps.i[""] = { "<Esc>", desc = "Exit out of insert mode" }
 
 -- Improved Terminal Navigation
 maps.t["<C-h>"] = { "<c-\\><c-n><c-w>h", desc = "Terminal left window navigation" }

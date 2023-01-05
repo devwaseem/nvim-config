@@ -56,7 +56,8 @@ end
 astronvim.status.env.buf_matchers = {
   filetype = function(pattern_list) return pattern_match(vim.bo.filetype, pattern_list) end,
   buftype = function(pattern_list) return pattern_match(vim.bo.buftype, pattern_list) end,
-  bufname = function(pattern_list) return pattern_match(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t"), pattern_list) end,
+  bufname = function(pattern_list) return pattern_match(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t"),
+    pattern_list) end,
 }
 
 astronvim.status.env.separators = astronvim.user_plugin_opts("heirline.separators", {
@@ -218,7 +219,7 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.search_count(opts)
   local search_func = vim.tbl_isempty(opts or {}) and function() return vim.fn.searchcount() end
-    or function() return vim.fn.searchcount(opts) end
+      or function() return vim.fn.searchcount(opts) end
   return function()
     local search_ok, search = pcall(search_func)
     if search_ok and type(search) == "table" and search.total then
@@ -243,7 +244,7 @@ end
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.mode_text(opts)
   local max_length =
-    math.max(unpack(vim.tbl_map(function(str) return #str[1] end, vim.tbl_values(astronvim.status.env.modes))))
+  math.max(unpack(vim.tbl_map(function(str) return #str[1] end, vim.tbl_values(astronvim.status.env.modes))))
   return function()
     local text = astronvim.status.env.modes[vim.fn.mode()][1]
     if opts.pad_text then
@@ -388,9 +389,9 @@ function astronvim.status.provider.unique_path(opts)
     end
     return astronvim.status.utils.stylize(
       (
-        opts.max_length > 0
-        and #unique_path > opts.max_length
-        and string.sub(unique_path, 1, opts.max_length - 2) .. astronvim.get_icon "Ellipsis" .. "/"
+      opts.max_length > 0
+          and #unique_path > opts.max_length
+          and string.sub(unique_path, 1, opts.max_length - 2) .. astronvim.get_icon "Ellipsis" .. "/"
       ) or unique_path,
       opts
     )
@@ -494,18 +495,18 @@ function astronvim.status.provider.lsp_progress(opts)
     local Lsp = vim.lsp.util.get_progress_messages()[1]
     return astronvim.status.utils.stylize(
       Lsp
-          and string.format(
-            " %%<%s %s %s (%s%%%%) ",
-            astronvim.get_icon("LSP" .. ((Lsp.percentage or 0) >= 70 and { "Loaded", "Loaded", "Loaded" } or {
-              "Loading1",
-              "Loading2",
-              "Loading3",
-            })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1]),
-            Lsp.title or "",
-            Lsp.message or "",
-            Lsp.percentage or 0
-          )
-        or "",
+      and string.format(
+        " %%<%s %s %s (%s%%%%) ",
+        astronvim.get_icon("LSP" .. ((Lsp.percentage or 0) >= 70 and { "Loaded", "Loaded", "Loaded" } or {
+          "Loading1",
+          "Loading2",
+          "Loading3",
+        })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1]),
+        Lsp.title or "",
+        Lsp.message or "",
+        Lsp.percentage or 0
+      )
+      or "",
       opts
     )
   end
@@ -548,7 +549,8 @@ end
 -- @usage local heirline_component = { provider = astronvim.status.provider.treesitter_status() }
 -- @see astronvim.status.utils.stylize
 function astronvim.status.provider.treesitter_status(opts)
-  return function() return astronvim.status.utils.stylize(require("nvim-treesitter.parser").has_parser() and "TS" or "", opts) end
+  return function() return astronvim.status.utils.stylize(require("nvim-treesitter.parser").has_parser() and "TS" or "",
+    opts) end
 end
 
 --- A provider function for displaying a single string
@@ -660,7 +662,7 @@ function astronvim.status.utils.stylize(str, opts)
   return str
       and (str ~= "" or opts.show_empty)
       and opts.separator.left .. astronvim.pad_string(icon .. str, opts.padding) .. opts.separator.right
-    or ""
+      or ""
 end
 
 --- A Heirline component for filling in the empty space of the bar
@@ -748,7 +750,8 @@ function astronvim.status.component.cmd_info(opts)
     surround = {
       separator = "center",
       color = "cmd_info_bg",
-      condition = function() return astronvim.status.condition.is_hlsearch() or astronvim.status.condition.is_macro_recording() end,
+      condition = function() return astronvim.status.condition.is_hlsearch() or
+          astronvim.status.condition.is_macro_recording() end,
     },
     condition = function() return vim.opt.cmdheight:get() == 0 end,
     hl = { fg = "cmd_info_fg" },
@@ -938,7 +941,7 @@ function astronvim.status.component.lsp(opts)
               astronvim.status.utils.build_provider(p_opts, astronvim.status.provider[provider](p_opts)),
               astronvim.status.utils.build_provider(p_opts, astronvim.status.provider.str(p_opts)),
             }
-          or false
+            or false
       end
     )
   )
@@ -955,11 +958,10 @@ function astronvim.status.component.builder(opts)
     table.insert(children, { provider = astronvim.pad_string(" ", { left = opts.padding.left - 1 }) })
   end
   for key, entry in pairs(opts) do
-    if
-      type(key) == "number"
-      and type(entry) == "table"
-      and astronvim.status.provider[entry.provider]
-      and (entry.opts == nil or type(entry.opts) == "table")
+    if type(key) == "number"
+        and type(entry) == "table"
+        and astronvim.status.provider[entry.provider]
+        and (entry.opts == nil or type(entry.opts) == "table")
     then
       entry.provider = astronvim.status.provider[entry.provider](entry.opts)
     end
@@ -975,7 +977,7 @@ function astronvim.status.component.builder(opts)
         children,
         opts.surround.condition
       )
-    or children
+      or children
 end
 
 --- Convert a component parameter table to a table that can be used with the component builder
@@ -992,7 +994,7 @@ function astronvim.status.utils.build_provider(opts, provider, _)
         update = opts.update,
         hl = opts.hl,
       }
-    or false
+      or false
 end
 
 --- Convert key/value table of options to an array of providers for the component builder

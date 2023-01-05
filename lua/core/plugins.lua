@@ -121,7 +121,7 @@ local astro_plugins = {
         "TSUpdateSync",
       })
     end,
-    run = function() require("nvim-treesitter.install").update { with_sync = true }() end,
+    run = function() require("nvim-treesitter.install").update { with_sync = true } () end,
     config = function() require "configs.treesitter" end,
   },
 
