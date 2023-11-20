@@ -4,7 +4,6 @@ return {
     dependencies = {
         'nvim-tree/nvim-web-devicons',
         "marko-cerovac/material.nvim",
-
     },
     config = function()
         local colors = {
@@ -78,7 +77,11 @@ return {
                 lualine_c = {
                     { 'diagnostics' },
                     { 'searchcount' },
-                    { 'selectioncount' }
+                    { 'selectioncount' },
+                    { "overseer" },
+
+                    -- { require("dr-lsp").lspCount },
+                    -- { require("dr-lsp").lspProgress },
                 },
                 lualine_x = {
                     { 'encoding' }

@@ -28,7 +28,7 @@ return {
                 nmap({ 'gd', "<leader>ld" }, require('telescope.builtin').lsp_definitions, "go to Definitions")
                 nmap({ 'gr', "<leader>lR" }, require('telescope.builtin').lsp_references, "go to References")
                 nmap({ 'gT', "<leader>lT" }, require('telescope.builtin').lsp_type_definitions, "go to Type Definitions")
-                nmap({ 'gI', "<leader>gI" }, require('telescope.builtin').lsp_implementations, "go to Implementations")
+                nmap({ 'gI', "<leader>lI" }, require('telescope.builtin').lsp_implementations, "go to Implementations")
                 nmap('<leader>lsw', require('telescope.builtin').lsp_workspace_symbols, "LSP Workspace Symbols")
                 nmap('<leader>lsd', require('telescope.builtin').lsp_document_symbols, "LSP Document Symbols")
                 nmap('<leader>led', function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end,
@@ -90,7 +90,24 @@ return {
                     }
                 }
             },
-            ruff_lsp = {},
+            ruff_lsp = {
+                keys = {
+                    {
+                        "<leader>lo",
+                        function()
+                            vim.lsp.buf.code_action({
+                                apply = true,
+                                context = {
+                                    only = { "source.organizeImports" },
+                                    diagnostics = {},
+                                },
+                            })
+                        end,
+                        desc = "Organize Imports",
+                    },
+                }
+            },
+            tailwindcss = {}
         }
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
 

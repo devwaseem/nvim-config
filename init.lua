@@ -1,3 +1,12 @@
+-- TODO:
+-- dap
+-- highlighter
+-- tailwindcss
+-- mini.cursorword
+-- Tip
+-- ufo
+
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 

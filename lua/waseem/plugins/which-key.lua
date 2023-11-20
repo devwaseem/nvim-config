@@ -18,8 +18,12 @@ return {
             ["<leader>f"] = { name = " Find" },
             ["<leader>l"] = { name = " LSP" },
             ["<leader>u"] = { name = " UI" },
-            ["<leader>g"] = { name = " Goto" },
+            ["<leader>g"] = { name = " Git" },
             ["<leader>e"] = { name = " Explorer" },
+            ["<leader>h"] = { name = "󰞋 Hover Split" },
+            ["<leader>t"] = { name = " Terminal" },
+            ["<leader>s"] = { name = " Scratch Pad" },
+
         }
     end,
 }
