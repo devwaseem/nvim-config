@@ -79,7 +79,6 @@ return {
                     { 'searchcount' },
                     { 'selectioncount' },
                     { "overseer" },
-
                     -- { require("dr-lsp").lspCount },
                     -- { require("dr-lsp").lspProgress },
                 },

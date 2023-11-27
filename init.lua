@@ -2,7 +2,6 @@
 -- dap
 -- highlighter
 -- tailwindcss
--- mini.cursorword
 -- Tip
 -- ufo
 

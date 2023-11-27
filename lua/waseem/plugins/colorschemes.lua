@@ -12,8 +12,8 @@ return {
             vim.g.material_style = "deep ocean"
             require('material').setup({
                 contrast = {
-                    terminal = false,            -- Enable contrast for the built-in terminal
-                    sidebars = true,             -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
+                    terminal = true,             -- Enable contrast for the built-in terminal
+                    sidebars = false,            -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
                     floating_windows = false,    -- Enable contrast for floating windows
                     cursor_line = false,         -- Enable darker background for the cursor line
                     non_current_windows = false, -- Enable contrasted background for non-current windows
@@ -46,7 +46,7 @@ return {
                     -- "mini",
                     -- "neogit",
                     -- "neotest",
-                    -- "neorg",
+                    "neorg",
                     "noice",
                     "nvim-cmp",
                     -- "nvim-navic",
@@ -61,8 +61,6 @@ return {
                 custom_colors = function(colors)
                     colors.editor.accent = colors.main.darkyellow
                 end
-
-
             })
         end,
     },
@@ -82,5 +80,6 @@ return {
             vim.opt.background = "dark"
         end
     },
+
 
 }

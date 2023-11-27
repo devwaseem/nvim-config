@@ -31,6 +31,14 @@ return {
                 javascript = {
                     { "prettierd", "prettier" }
                 },
+                typescript = {
+                    { "prettierd", "prettier" }
+                },
+                astro = {
+                    { "prettierd", "prettier" }
+                },
+                html = { "djlint" },
+                htmldjango = { "djlint" }
             },
 
             format_on_save = function(bufnr)

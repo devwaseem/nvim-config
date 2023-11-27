@@ -61,5 +61,10 @@ return {
                 map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
             end
         })
+
+        -- scrollbar
+        -- if pcall(require, 'scrollbar') then
+        --     require("scrollbar.handlers.gitsigns").setup()
+        -- end
     end
 }

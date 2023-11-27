@@ -1,18 +1,22 @@
 return {
     "linux-cultist/venv-selector.nvim",
-    cmd = "VenvSelect",
-    opts = function(_, opts)
+    event = { "BufReadPost *.py" },
+    -- cmd = "VenvSelect",
+    -- keys = { { "<leader>lv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv" } },
+    config = function(_, opts)
         if pcall(require, "nvim-dap-python") then
             opts.dap_enabled = true
         end
-        return vim.tbl_deep_extend("force", opts, {
+        opts = vim.tbl_deep_extend("force", opts, {
             name = {
                 "venv",
                 ".venv",
                 "env",
                 ".env",
             },
+            poetry_path = "./"
         })
+        require('venv-selector').setup(opts)
+        require('venv-selector').retrieve_from_cache()
     end,
-    keys = { { "<leader>lv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv" } },
 }

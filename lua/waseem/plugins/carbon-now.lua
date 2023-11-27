@@ -1,9 +1,6 @@
 return {
     "ellisonleao/carbon-now.nvim",
     cmd = "CarbonNow",
-    keys = {
-        { "<leader>cn", ":CarbonNow<CR>", { "v" }, desc = "Show code in Carbon.now.sh" }
-    },
     opts = {
         base_url = "https://carbon.now.sh/",
         open_cmd = 'open',

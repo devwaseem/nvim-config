@@ -16,8 +16,6 @@ return {
         require('mason').setup()
         require("mason-lspconfig").setup {
             ensure_installed = {
-                "lua_ls",
-                "pyright",
             },
         }
 
@@ -56,69 +54,130 @@ return {
         end
 
 
+
         local lsp = require('lspconfig')
-        local lsp_servers = {
-            pyright = {
-                settings = {
-                    pyright = {
-                        autoImportCompletion = true,
-                    },
-                    python = {
-                        analysis = {
-                            -- autoSearchPaths = true,
-                            -- diagnosticMode = 'openFilesOnly',
-                            diagnosticMode = 'workspace',
-                            -- unpackuseLibraryCodeForTypes = true,
-                            -- typeCheckingMode = 'off',
-                            -- useLibraryCodeForTypes = true,
-                            -- diagnosticSeverityOverrides = {
-                            --     reportGeneralTypeIssues = "none",
-                            --     reportOptionalMemberAccess = "none",
-                            --     reportOptionalSubscript = "none",
-                            --     reportPrivateImportUsage = "none",
-                            -- },
-                        }
-                    }
-                }
-            },
-            lua_ls = {
-                settings = {
-                    Lua = {
-                        diagnostics = {
-                            globals = { 'vim' }
-                        }
-                    }
-                }
-            },
-            ruff_lsp = {
-                keys = {
-                    {
-                        "<leader>lo",
-                        function()
-                            vim.lsp.buf.code_action({
-                                apply = true,
-                                context = {
-                                    only = { "source.organizeImports" },
-                                    diagnostics = {},
-                                },
-                            })
-                        end,
-                        desc = "Organize Imports",
-                    },
-                }
-            },
-            tailwindcss = {}
-        }
+        -- local lsp_servers = {
+        --     clangd = {},
+        --     pyright = {
+        --         settings = {
+        --             pyright = {
+        --                 autoImportCompletion = true,
+        --             },
+        --             python = {
+        --                 analysis = {
+        --                     -- autoSearchPaths = true,
+        --                     -- diagnosticMode = 'openFilesOnly',
+        --                     diagnosticMode = 'workspace',
+        --                     -- unpackuseLibraryCodeForTypes = true,
+        --                     -- typeCheckingMode = 'off',
+        --                     useLibraryCodeForTypes = true,
+        --                     -- diagnosticSeverityOverrides = {
+        --                     --     reportGeneralTypeIssues = "none",
+        --                     --     reportOptionalMemberAccess = "none",
+        --                     --     reportOptionalSubscript = "none",
+        --                     --     reportPrivateImportUsage = "none",
+        --                     -- },
+        --                 }
+        --             }
+        --         }
+        --     },
+        --     lua_ls = {
+        --         settings = {
+        --             Lua = {
+        --                 diagnostics = {
+        --                     globals = { 'vim' }
+        --                 }
+        --             }
+        --         }
+        --     },
+        --     ruff_lsp = {},
+        --     tailwindcss = {}
+        -- }
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-        for server, opts in pairs(lsp_servers) do
-            lsp[server].setup(vim.tbl_deep_extend("force", opts, {
-                on_attach = on_attach,
-                capatabilities = capabilities,
-            }))
-        end
+        -- for server, opts in pairs(lsp_servers) do
+        --     lsp[server].setup(vim.tbl_deep_extend("force", opts, {
+        --         on_attach = on_attach,
+        --         capatabilities = capabilities,
+        --     }))
+        -- end
+        --
 
-        -- require('lspconfig').pyright.setup { on_attach = on_attach }
-        -- require('lspconfig').lua_ls.setup { on_attach = on_attach }
+        require('mason-lspconfig').setup_handlers {
+            function(server_name)
+                lsp[server_name].setup {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                }
+            end,
+
+            ["lua_ls"] = function()
+                lsp.lua_ls.setup {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                    settings = {
+                        Lua = {
+                            diagnostics = {
+                                globals = { 'vim' }
+                            }
+                        }
+                    }
+                }
+            end,
+            ["pyright"] = function()
+                lsp.pyright.setup {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                    settings = {
+                        pyright = {
+                            autoImportCompletion = true,
+                        },
+                        python = {
+                            analysis = {
+                                -- autoSearchPaths = true,
+                                -- diagnosticMode = 'openFilesOnly',
+                                diagnosticMode = 'workspace',
+                                -- unpackuseLibraryCodeForTypes = true,
+                                typeCheckingMode = 'off',
+                                useLibraryCodeForTypes = true,
+                                diagnosticSeverityOverrides = {
+                                    reportGeneralTypeIssues = "none",
+                                    reportOptionalMemberAccess = "none",
+                                    reportOptionalSubscript = "none",
+                                    reportPrivateImportUsage = "none",
+                                },
+                            }
+                        }
+                    }
+                }
+            end,
+            -- ['jedi_language_server'] = function()
+            --     lsp.jedi_language_server.setup {
+            --         on_attach = on_attach,
+            --         capabilities = capabilities,
+            --         -- init_options = {
+            --         --     completion = {
+            --         --         disableSnippets = true,
+            --         --     },
+            --         -- }
+            --     }
+            -- end,
+            ['ruff_lsp'] = function()
+                lsp.ruff_lsp.setup {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                    init_options = {
+                        settings = {
+                            args = {
+                                -- "--extend-select=W,COM,ICN,I,",
+                                -- "--ignore=E501,E722,COM812",
+                            },
+                        },
+                    },
+
+                }
+            end
+
+        }
     end
 }
