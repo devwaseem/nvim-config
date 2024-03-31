@@ -145,6 +145,9 @@ return {
                                     reportOptionalMemberAccess = "none",
                                     reportOptionalSubscript = "none",
                                     reportPrivateImportUsage = "none",
+                                    reportMissingImports = "none",
+                                    reportUnusedFunction = "none",
+                                    reportUnusedVariable = "none",
                                 },
                             }
                         }
@@ -164,8 +167,9 @@ return {
             -- end,
             ['ruff_lsp'] = function()
                 lsp.ruff_lsp.setup {
-                    on_attach = on_attach,
-                    capabilities = capabilities,
+                    on_attach = function(client, _)
+                        client.serverclient.server_capabilities.hoverProvider = false
+                    end,
                     init_options = {
                         settings = {
                             args = {
