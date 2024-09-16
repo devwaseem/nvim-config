@@ -16,8 +16,8 @@ return {
     config = function(_, opt)
         if pcall(require, 'which-key') then
             local wk = require('which-key')
-            wk.register({
-                ["<leader>uf"] = { name = "Auto Formatting on Save", }
+            wk.add({
+                { "<leader>uf", name = "Auto Formatting on Save", }
             })
         end
 

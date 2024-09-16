@@ -1,7 +1,11 @@
 return {
     'j-hui/fidget.nvim',
-    event="VeryLazy",
+    event = "VeryLazy",
     config = function()
-        require("fidget").setup()
+        require("fidget").setup({
+            notification = {
+                override_vim_notify = true
+            }
+        })
     end
 }

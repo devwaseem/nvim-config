@@ -6,3 +6,21 @@ vim.api.nvim_create_autocmd('TextYankPost', {
         })
     end
 })
+
+vim.api.nvim_create_autocmd("InsertEnter", {
+    pattern = "*",
+    callback = function()
+        vim.diagnostic.config({
+            virtual_text = false,
+        })
+    end
+})
+
+vim.api.nvim_create_autocmd("InsertLeave", {
+    pattern = "*",
+    callback = function()
+        vim.diagnostic.config({
+            virtual_text = true,
+        })
+    end
+})

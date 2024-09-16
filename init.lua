@@ -1,7 +1,4 @@
 -- TODO:
--- dap
--- highlighter
--- tailwindcss
 -- Tip
 -- ufo
 
@@ -25,7 +22,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup(
-    { { import = "waseem.plugins" }, { import = "waseem.plugins.lsp" }, { import = "waseem.plugins.telescope" } },
+    { { import = "waseem.plugins" }, { import = "waseem.plugins.lsp" }, { import = "waseem.plugins.telescope" }, { import = "waseem.plugins.ai" }, },
     {
         checker = {
             enabled = true,

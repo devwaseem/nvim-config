@@ -80,6 +80,4 @@ return {
             vim.opt.background = "dark"
         end
     },
-
-
 }

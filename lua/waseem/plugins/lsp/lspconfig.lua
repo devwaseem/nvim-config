@@ -154,34 +154,6 @@ return {
                     }
                 }
             end,
-            -- ['jedi_language_server'] = function()
-            --     lsp.jedi_language_server.setup {
-            --         on_attach = on_attach,
-            --         capabilities = capabilities,
-            --         -- init_options = {
-            --         --     completion = {
-            --         --         disableSnippets = true,
-            --         --     },
-            --         -- }
-            --     }
-            -- end,
-            ['ruff_lsp'] = function()
-                lsp.ruff_lsp.setup {
-                    on_attach = function(client, _)
-                        client.serverclient.server_capabilities.hoverProvider = false
-                    end,
-                    init_options = {
-                        settings = {
-                            args = {
-                                -- "--extend-select=W,COM,ICN,I,",
-                                -- "--ignore=E501,E722,COM812",
-                            },
-                        },
-                    },
-
-                }
-            end
-
         }
     end
 }

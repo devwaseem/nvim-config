@@ -7,23 +7,29 @@ return {
         vim.o.timeoutlen = 300
     end,
     opts = {
-        icons = {
-            group = "+ ",
-        },
     },
     config = function(_, opts)
         local wk = require("which-key")
         wk.setup(opts)
-        wk.register {
-            ["<leader>f"] = { name = " Find" },
-            ["<leader>l"] = { name = " LSP" },
-            ["<leader>u"] = { name = " UI" },
-            ["<leader>g"] = { name = " Git" },
-            ["<leader>e"] = { name = " Explorer" },
-            ["<leader>h"] = { name = "󰞋 Hover Split" },
-            ["<leader>t"] = { name = " Terminal" },
-            ["<leader>s"] = { name = " Scratch Pad" },
-
+        wk.add {
+            { "<leader>f", group = "Find", icon = "" },
+            { "<leader>l", group = "LSP", icon = "" },
+            { "<leader>u", group = "UI", icon = "" },
+            { "<leader>g", group = "Git", icon = "" },
+            { "<leader>e", group = "Explorer", icon = "" },
+            { "<leader>h", group = "Hover Split", icon = "󰞋" },
+            { "<leader>t", group = "Terminal", icon = "" },
+            { "<leader>s", group = "Scratch Pad", icon = "" },
+            { "<leader>r", group = "Run Tests", icon = "" },
         }
+        wk.add({
+            {
+                "<leader>b",
+                group = "buffers",
+                expand = function()
+                    return require("which-key.extras").expand.buf()
+                end
+            },
+        })
     end,
 }

@@ -1,5 +1,6 @@
 return {
     "linux-cultist/venv-selector.nvim",
+    branch = "regexp",
     event = { "BufReadPost *.py" },
     -- cmd = "VenvSelect",
     -- keys = { { "<leader>lv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv" } },
@@ -16,7 +17,7 @@ return {
             },
             poetry_path = "./"
         })
+        opts.enable_cached_venvs = true
         require('venv-selector').setup(opts)
-        require('venv-selector').retrieve_from_cache()
     end,
 }

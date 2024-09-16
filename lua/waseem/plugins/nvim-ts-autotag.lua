@@ -1,14 +1,23 @@
 return {
     "windwp/nvim-ts-autotag",
-    -- event = { "InsertEnter *.html", "InsertEnter *.xml", "InsertEnter *.jsx", },
+    event = { "InsertEnter *.html", "InsertEnter *.xml", "InsertEnter *.jsx", "InsertEnter *.xml" },
     config = function()
-        require 'nvim-treesitter.configs'.setup {
-            autotag = {
-                enable = true,
-            }
-        }
         require('nvim-ts-autotag').setup({
-            filetypes = { "html", "htmldjango", "svg", "xml" }
+            opts = {
+                -- Defaults
+                enable_close = true,          -- Auto close tags
+                enable_rename = true,         -- Auto rename pairs of tags
+                enable_close_on_slash = false -- Auto close on trailing </
+            },
+            filetypes = { "html", "htmldjango", "svg", "xml" },
+            -- Also override individual filetype configs, these take priority.
+            -- Empty by default, useful if one of the "opts" global settings
+            -- doesn't work well in a specific filetype
+            per_filetype = {
+                ["html"] = {
+                    enable_close = false
+                }
+            }
         })
     end,
 }

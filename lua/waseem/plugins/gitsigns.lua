@@ -35,8 +35,8 @@ return {
 
                 if pcall(require, "which-key") then
                     local wk = require('which-key')
-                    wk.register {
-                        ["<leader>gt"] = { name = "Toggle" }
+                    wk.add {
+                        { "<leader>gt", name = "Toggle" }
                     }
                 end
 
