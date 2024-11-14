@@ -5,7 +5,7 @@ return {
     },
     lazy = false,
     keys = {
-        {"<leader>/", "<cmd>execute 'normal gcc'<CR>", mode="v"},
-        {"<leader>/", "<cmd>execute 'normal gcc'<CR>", mode="n"}
+        { "<leader>/", "<cmd>execute 'normal gcc'<CR>", mode = "v" },
+        { "<leader>/", "<cmd>execute 'normal gcc'<CR>", mode = "n" }
     }
 }

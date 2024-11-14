@@ -1,5 +1,8 @@
 return {
     "Jxstxs/conceal.nvim",
+    keys = {
+        "<leader>uc"
+    },
     dependencies = {
         "nvim-treesitter/nvim-treesitter"
     },

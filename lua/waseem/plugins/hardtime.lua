@@ -6,8 +6,10 @@ return {
         showmode = false,
         restriction_mode = 'block',
         disabled_keys = {
-            -- ["<Up>"] = {},
-            -- ["<Down>"] = {},
+            ["<Up>"] = {},
+            ["<Down>"] = {},
+            ["<Left>"] = {},
+            ["<Right>"] = {},
             ["<Space>"] = { "n", "x" },
         }
     },

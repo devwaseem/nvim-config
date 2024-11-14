@@ -1,5 +1,14 @@
 return {
     {
+        "tiagovla/tokyodark.nvim",
+        priority = 1000,
+        enabled = true,
+        opts = {},
+        config = function(_, opts)
+            require("tokyodark").setup(opts) -- calling setup is optional
+        end,
+    },
+    {
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
@@ -26,8 +35,8 @@ return {
                     keywords = { italic = true, bold = false --[[ underline = true ]] },
                     functions = { undercurl = false --[[ bold = true, undercurl = true ]] },
                     variables = { bold = false },
-                    operators = {},
-                    types = {},
+                    operators = { italic = true },
+                    types = { italic = true },
                 },
 
                 plugins = { -- Uncomment the plugins that you use to highlight them
@@ -38,14 +47,14 @@ return {
                     "fidget",
                     "flash",
                     "gitsigns",
-                    -- "harpoon",
+                    "harpoon",
                     -- "hop",
-                    -- "illuminate",
+                    "illuminate",
                     "indent-blankline",
                     -- "lspsaga",
-                    -- "mini",
+                    "mini",
                     -- "neogit",
-                    -- "neotest",
+                    "neotest",
                     "neorg",
                     "noice",
                     "nvim-cmp",

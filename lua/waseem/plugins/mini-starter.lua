@@ -5,10 +5,12 @@ return {
     version = '*',
     event = "VimEnter",
     config = function()
-        local colors = require('material.colors')
-        vim.api.nvim_set_hl(0, 'MiniStarterFooter', { fg = colors.editor.line_numbers })
-        vim.api.nvim_set_hl(0, 'MiniStarterHeader', { fg = colors.editor.accent })
-        vim.api.nvim_set_hl(0, 'MiniStarterSection', { fg = colors.editor.fg_dark })
+        if vim.g.colors_name == "material" and pcall(require, 'material') then
+            local colors = require('material.colors')
+            vim.api.nvim_set_hl(0, 'MiniStarterFooter', { fg = colors.editor.line_numbers })
+            vim.api.nvim_set_hl(0, 'MiniStarterHeader', { fg = colors.editor.accent })
+            vim.api.nvim_set_hl(0, 'MiniStarterSection', { fg = colors.editor.fg_dark })
+        end
         local starter = require('mini.starter')
         starter.setup({
             header = function()

@@ -14,6 +14,7 @@ return {
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-nvim-lua',
         'hrsh7th/cmp-path',
+        'lukas-reineke/cmp-under-comparator',
     },
 
     config = function()
@@ -46,6 +47,20 @@ return {
                 -- completion = cmp.config.window.bordered(),
                 documentation = cmp.config.window.bordered(),
             },
+
+            sorting = {
+                comparators = {
+                    cmp.config.compare.offset,
+                    cmp.config.compare.exact,
+                    cmp.config.compare.score,
+                    require "cmp-under-comparator".under,
+                    cmp.config.compare.kind,
+                    cmp.config.compare.sort_text,
+                    cmp.config.compare.length,
+                    cmp.config.compare.order,
+                },
+            },
+
             mapping = cmp.mapping.preset.insert({
                 ['<C-b>'] = cmp.mapping.scroll_docs(-4),
                 ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -55,15 +70,15 @@ return {
             }),
 
             sources = cmp.config.sources({
-                { name = 'nvim_lsp' },
-                { name = 'luasnip' }, -- For luasnip users.
+                { name = 'nvim_lsp', priority = 1000 },
+                { name = 'luasnip',  priority = 750 }, -- For luasnip users.
             }, {
-                { name = 'path' },
-                { name = 'buffer' },
-                { name = 'emoji' },
-                { name = "neorg" },
-                { name = 'calc' },
-                { name = 'nerdfont' },
+                { name = 'buffer',   priority = 500 },
+                { name = 'path',     priority = 400 },
+                { name = 'emoji',    priority = 300 },
+                -- { name = "neorg" },
+                { name = 'calc',     priority = 200 },
+                { name = 'nerdfont', priority = 100 },
             }),
 
             formatting = {
@@ -81,19 +96,9 @@ return {
                     -- in the following line:
                     vim_item.kind = lspkind.symbolic(vim_item.kind, { mode = 'symbol' })
                     vim_item.menu = source_mapping[entry.source.name]
-                    if entry.source.name == 'cmp_ai' then
-                        local detail = (entry.completion_item.labelDetails or {}).detail
-                        vim_item.kind = ''
-                        if detail and detail:find('.*%%.*') then
-                            vim_item.kind = vim_item.kind .. ' ' .. detail
-                        end
-
-                        if (entry.completion_item.data or {}).multiline then
-                            vim_item.kind = vim_item.kind .. ' ' .. '[ML]'
-                        end
-                    end
                     local maxwidth = 80
                     vim_item.abbr = string.sub(vim_item.abbr, 1, maxwidth)
+                    vim_item = require("nvim-highlight-colors").format(entry, vim_item)
                     return vim_item
                 end,
             }

@@ -1,5 +1,6 @@
 return {
     "utilyre/barbecue.nvim",
+    enabled = false,
     event = { "BufReadPost" },
     name = "barbecue",
     version = "*",

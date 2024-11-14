@@ -136,7 +136,7 @@ return {
                             analysis = {
                                 -- autoSearchPaths = true,
                                 -- diagnosticMode = 'openFilesOnly',
-                                diagnosticMode = 'workspace',
+                                diagnosticMode = 'openFilesOnly',
                                 -- unpackuseLibraryCodeForTypes = true,
                                 typeCheckingMode = 'off',
                                 useLibraryCodeForTypes = true,

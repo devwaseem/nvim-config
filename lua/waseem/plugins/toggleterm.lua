@@ -5,7 +5,9 @@ return {
     keys = {
         { "<leader>tf", "<cmd>ToggleTerm direction=float<CR>",      "Toggle Terminal as Float" },
         { "<leader>tv", "<cmd>ToggleTerm direction=vertical<CR>",   "Toggle Terminal in Vertical Split" },
-        { "<leader>th", "<cmd>ToggleTerm direction=horizontal<CR>", "Toggle Terminal in Horizontal Split" }
+        { "<leader>th", "<cmd>ToggleTerm direction=horizontal<CR>", "Toggle Terminal in Horizontal Split" },
+        { "<C-\\>",     "<cmd>ToggleTerm direction=horizontal<CR>", "Toggle Terminal in Horizontal Split" },
+
     },
     config = function()
         require('toggleterm').setup({

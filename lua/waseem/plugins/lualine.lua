@@ -16,58 +16,71 @@ return {
             grey   = '#303030',
         }
 
-        local mcolors = require('material.colors')
-        local m = mcolors.main
-        local e = mcolors.editor
-        local s = mcolors.syntax
+        local custom_theme = nil
+        if vim.g.colors_name == 'material' and pcall(require, 'material') then
+            local mcolors = require('material.colors')
+            local m = mcolors.main
+            local e = mcolors.editor
+            custom_theme = {
+                normal = {
+                    a = { fg = e.fg, bg = e.bg, gui = "bold" },
+                    b = { fg = m.gray, bg = e.bg, gui = "italic" },
+                    c = { fg = m.gray, bg = e.bg, gui = "italic" },
 
-        local bubbles_theme = {
-            normal = {
-                a = { fg = e.fg, bg = e.bg, gui = "bold" },
-                b = { fg = m.gray, bg = e.bg, gui = "italic" },
-                c = { fg = m.gray, bg = e.bg, gui = "italic" },
+                    z = { fg = m.gray, bg = e.bg, gui = "bold" },
 
-                z = { fg = m.gray, bg = e.bg, gui = "bold" },
+                },
+                insert = {
+                    a = { fg = m.black, bg = m.darkgreen, gui = "bold" },
+                    b = { fg = m.gray, bg = e.bg, gui = "italic" },
+                    c = { fg = m.gray, bg = e.bg, gui = "italic" },
 
-            },
-            insert = {
-                a = { fg = m.black, bg = m.darkgreen, gui = "bold" },
-                b = { fg = m.gray, bg = e.bg, gui = "italic" },
-                c = { fg = m.gray, bg = e.bg, gui = "italic" },
+                    z = { fg = m.darkgreen, bg = e.bg, gui = "bold" },
+                },
+                visual = {
+                    a = { fg = m.black, bg = m.darkred, gui = "bold" },
+                    b = { fg = m.gray, bg = e.bg, gui = "italic" },
+                    c = { fg = m.gray, bg = e.bg, gui = "italic" },
 
-                z = { fg = m.darkgreen, bg = e.bg, gui = "bold" },
-            },
-            visual = {
-                a = { fg = m.black, bg = m.darkred, gui = "bold" },
-                b = { fg = m.gray, bg = e.bg, gui = "italic" },
-                c = { fg = m.gray, bg = e.bg, gui = "italic" },
+                    z = { fg = m.darkred, bg = e.bg, gui = "bold" },
+                },
+                replace = {
+                    a = { fg = m.black, bg = m.paleblue, gui = "bold" },
+                    b = { fg = m.gray, bg = e.bg, gui = "italic" },
+                    c = { fg = m.gray, bg = e.bg, gui = "italic" },
 
-                z = { fg = m.darkred, bg = e.bg, gui = "bold" },
-            },
-            replace = {
-                a = { fg = m.black, bg = m.paleblue, gui = "bold" },
-                b = { fg = m.gray, bg = e.bg, gui = "italic" },
-                c = { fg = m.gray, bg = e.bg, gui = "italic" },
+                    z = { fg = m.paleblue, bg = e.bg, gui = "bold" },
+                },
 
-                z = { fg = m.paleblue, bg = e.bg, gui = "bold" },
-            },
+                inactive = {
+                    a = { fg = colors.white, bg = e.bg },
+                    b = { fg = colors.white, bg = e.bg },
+                    c = { fg = colors.black, bg = e.bg },
+                },
+            }
+        end
 
-            inactive = {
-                a = { fg = colors.white, bg = e.bg },
-                b = { fg = colors.white, bg = e.bg },
-                c = { fg = colors.black, bg = e.bg },
-            },
+        local options = {
+            component_separators = '›',
+            section_separators = { right = '' },
         }
 
+        if custom_theme then
+            options.theme = custom_theme
+        end
+
         require('lualine').setup {
-            options = {
-                theme = bubbles_theme,
-                component_separators = '›',
-                section_separators = { right = '󱎕' },
-            },
+            options = options,
             sections = {
                 lualine_a = {
-                    { 'mode' }
+                    -- { 'mode' }
+                    {
+                        require("noice").api.status.mode.get,
+                        cond = require("noice").api.status.mode.has,
+                        separator = { left = '', right = '' },
+                        -- right_padding = 2
+                    },
+
                 },
                 lualine_b = {
                     { 'filename' },
@@ -79,11 +92,31 @@ return {
                     { 'searchcount' },
                     { 'selectioncount' },
                     { "overseer" },
-                    -- { require("dr-lsp").lspCount },
-                    -- { require("dr-lsp").lspProgress },
                 },
                 lualine_x = {
-                    { 'encoding' }
+                    {
+                        require("noice").api.status.command.get,
+                        cond = require("noice").api.status.command.has,
+                    },
+                    {
+                        function()
+                            local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+                            if next(clients) == nil then
+                                return '' -- No LSP attached
+                            end
+                            local lsp_names = {}
+                            for _, client in pairs(clients) do
+                                table.insert(lsp_names, client.name)
+                            end
+                            return table.concat(lsp_names, ', ')
+                        end,
+                        icon = '', -- Optional icon
+                    },
+                    {
+                        require("noice").api.status.search.get,
+                        cond = require("noice").api.status.search.has,
+                    },
+                    { 'encoding' },
                 },
                 lualine_y = {
                     { 'progress' }

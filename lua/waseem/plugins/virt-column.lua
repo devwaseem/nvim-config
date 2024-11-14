@@ -1,7 +1,7 @@
 function get_highlight_color()
     local highlight_name = "VirtColumn"
-    local color = "red"
-    if pcall(require, 'material') then
+    local color = "grey"
+    if vim.g.colors_name == "material" and pcall(require, 'material') then
         local colors = require('material.colors')
         color = colors.editor.line_numbers
     end
