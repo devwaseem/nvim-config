@@ -22,7 +22,13 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup(
-    { { import = "waseem.plugins" }, { import = "waseem.plugins.lsp" }, { import = "waseem.plugins.telescope" }, { import = "waseem.plugins.ai" }, },
+    {
+        { import = "waseem.plugins" },
+        { import = "waseem.plugins.lsp" },
+        { import = "waseem.plugins.telescope" },
+        { import = "waseem.plugins.ai" },
+        { import = "waseem.plugins.dap" },
+    },
     {
         checker = {
             enabled = true,
@@ -44,3 +50,4 @@ require("lazy").setup(
 -- vim.cmd.colorscheme "catppuccin"
 vim.cmd.colorscheme "material"
 -- vim.cmd.colorscheme "tokyodark"
+-- vim.cmd.colorscheme "enfocado"

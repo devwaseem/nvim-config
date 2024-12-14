@@ -91,12 +91,17 @@ return {
         require('neotest').setup {
             adapters = {
                 require('neotest-python')({
+                    dap = { justMyCode = false },
                     args = {
-                        '--create-db',
+                        '--reuse-db',
+                        -- '-v',
+                        -- '--capture=sys',
+                        -- '--no-migrations',
                         '--color=yes',
                         '--strict-markers',
                         '--strict-config',
                         '--tb=short',
+                        -- '--tb=long',
                         '--no-cov',
                     },
                     runner = "pytest",

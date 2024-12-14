@@ -61,7 +61,7 @@ return {
         end
 
         local options = {
-            component_separators = '›',
+            component_separators = { left = '›', right = '‹' },
             section_separators = { right = '' },
         }
 
@@ -94,9 +94,16 @@ return {
                     { "overseer" },
                 },
                 lualine_x = {
+                    -- {
+                    --     require("noice").api.status.command.get,
+                    --     cond = require("noice").api.status.command.has,
+                    -- },
                     {
-                        require("noice").api.status.command.get,
-                        cond = require("noice").api.status.command.has,
+                        function()
+                            return "Supermaven"
+                        end,
+                        icon = "󱡄",
+                        cond = require('supermaven-nvim.api').is_running,
                     },
                     {
                         function()

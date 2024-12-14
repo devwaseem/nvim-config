@@ -9,7 +9,9 @@ return {
     },
     keys = {
         { "<leader>o",  "<cmd>Neotree toggle=true source=filesystem reveal=true position=bottom<CR>", desc = "Open Filesystem Explorer as float" },
-        { "<leader>ef", "<cmd>Neotree toggle=true source=filesystem reveal=true position=left<CR>",   desc = "Open Filesystem Explorer to the left" },
+        { "<leader>el", "<cmd>Neotree toggle=true source=filesystem reveal=true position=left<CR>",   desc = "Open Filesystem Explorer to the left" },
+        { "<leader>er", "<cmd>Neotree toggle=true source=filesystem reveal=true position=right<CR>",  desc = "Open Filesystem Explorer to the right" },
+        { "<leader>et", "<cmd>Neotree toggle=true source=filesystem reveal=true position=top<CR>",    desc = "Open Filesystem Explorer to the top" },
         { "<leader>eb", "<cmd>Neotree toggle=true source=buffers position=float<CR>",                 desc = "Open Buffer explorer as float" }
     },
     config = function()

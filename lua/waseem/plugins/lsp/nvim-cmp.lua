@@ -32,20 +32,25 @@ return {
             nvim_lua = '[Lua]',
             cmp_ai = '[AI]',
             path = '[Path]',
+            Supermaven = "",
         }
 
         cmp.setup({
+
             experimental = {
                 ghost_text = true,
+                native_menu = false,
             },
+
             snippet = {
                 expand = function(args)
                     require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
                 end,
             },
+
             window = {
                 -- completion = cmp.config.window.bordered(),
-                documentation = cmp.config.window.bordered(),
+                -- documentation = cmp.config.window.bordered(),
             },
 
             sorting = {
@@ -70,7 +75,8 @@ return {
             }),
 
             sources = cmp.config.sources({
-                { name = 'nvim_lsp', priority = 1000 },
+                -- { name = "supermaven", priority = 1000 },
+                { name = 'nvim_lsp', priority = 900 },
                 { name = 'luasnip',  priority = 750 }, -- For luasnip users.
             }, {
                 { name = 'buffer',   priority = 500 },

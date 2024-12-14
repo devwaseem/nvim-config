@@ -12,7 +12,13 @@ return {
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
-        enabled = false,
+        enabled = true,
+    },
+    {
+        "wuelnerdotexe/vim-enfocado",
+        name = "enfocado",
+        priority = 1000,
+        enabled = true,
     },
     {
         "marko-cerovac/material.nvim",
@@ -84,7 +90,7 @@ return {
     {
         "nyoom-engineering/oxocarbon.nvim",
         priority = 1000,
-        enabled = false,
+        enabled = true,
         config = function()
             vim.opt.background = "dark"
         end

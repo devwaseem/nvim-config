@@ -19,7 +19,6 @@ return {
             },
         }
 
-
         local on_attach = function(client, bufnr)
             local lsp = vim.lsp
             if pcall(require, "telescope.builtin") then
@@ -124,6 +123,24 @@ return {
                     }
                 }
             end,
+            ["basedpyright"] = function()
+                lsp.basedpyright.setup {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                    settings = {
+                        disableOrganizeImports = true,
+                        basedpyright = {
+                            analysis = {
+                                autoImportCompletions = true,
+                                autoSearchPaths = true,
+                                inlayHints = {
+                                    genericTypes = true
+                                }
+                            }
+                        }
+                    }
+                }
+            end,
             ["pyright"] = function()
                 lsp.pyright.setup {
                     on_attach = on_attach,
@@ -134,9 +151,10 @@ return {
                         },
                         python = {
                             analysis = {
-                                -- autoSearchPaths = true,
+                                autoImportCompletions = true,
+                                autoSearchPaths = true,
                                 -- diagnosticMode = 'openFilesOnly',
-                                diagnosticMode = 'openFilesOnly',
+                                diagnosticMode = 'workspace',
                                 -- unpackuseLibraryCodeForTypes = true,
                                 typeCheckingMode = 'off',
                                 useLibraryCodeForTypes = true,
